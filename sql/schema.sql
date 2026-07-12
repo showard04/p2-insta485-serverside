@@ -26,3 +26,22 @@ CREATE TABLE likes (
   FOREIGN KEY(owner) REFERENCES users(username) ON DELETE CASCADE,
   FOREIGN KEY(postid) REFERENCES posts(postid) ON DELETE CASCADE
 );
+
+CREATE TABLE following(
+  follower VARCHAR(20),
+  followee VARCHAR(20),
+  PRIMARY KEY(follower, followee),
+  created DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (follower) REFERENCES users(username) ON DELETE CASCADE,
+  FOREIGN KEY (followee) REFERENCES users(username) ON DELETE CASCADE
+);
+
+CREATE TABLE comments(
+  commentid INTEGER PRIMARY KEY AUTOINCREMENT,
+  owner VARCHAR(20),
+  FOREIGN KEY (owner) REFERENCES users(username) ON DELETE CASCADE,
+  postid INTEGER,
+  FOREIGN KEY (postid) REFERENCES posts(postid) ON DELETE CASCADE,
+  text VARCHAR(1024),
+  created DATETIME DEFAULT CURRENT_TIMESTAMP
+);
