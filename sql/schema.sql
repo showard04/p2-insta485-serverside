@@ -28,8 +28,8 @@ CREATE TABLE likes (
 );
 
 CREATE TABLE following(
-  follower VARCHAR(20),
-  followee VARCHAR(20),
+  follower VARCHAR(20) NOT NULL,
+  followee VARCHAR(20) NOT NULL,
   PRIMARY KEY(follower, followee),
   created DATETIME DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (follower) REFERENCES users(username) ON DELETE CASCADE,
@@ -38,10 +38,10 @@ CREATE TABLE following(
 
 CREATE TABLE comments(
   commentid INTEGER PRIMARY KEY AUTOINCREMENT,
-  owner VARCHAR(20),
+  owner VARCHAR(20) NOT NULL,
   FOREIGN KEY (owner) REFERENCES users(username) ON DELETE CASCADE,
-  postid INTEGER,
+  postid INTEGER NOT NULL,
   FOREIGN KEY (postid) REFERENCES posts(postid) ON DELETE CASCADE,
-  text VARCHAR(1024),
+  text VARCHAR(1024) NOT NULL,
   created DATETIME DEFAULT CURRENT_TIMESTAMP
 );
