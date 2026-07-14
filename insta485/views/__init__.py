@@ -9,3 +9,8 @@ from insta485.views.accounts import (
     show_login,
     show_password,
 )
+
+from insta485.views.following import (
+    show_following,
+    update_following,
+)
