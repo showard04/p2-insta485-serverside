@@ -1,6 +1,7 @@
 """Views, one for each Insta485 page."""
 
 from insta485.views.index import show_index
+from insta485.views.user import show_user
 from insta485.views.accounts import (
     show_auth,
     show_create,

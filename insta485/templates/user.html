@@ -45,13 +45,13 @@
     {% endif %}
 
     {%if t_followers %}
-        <a href="{{url_for('show_followers', username=us.username)}}">{{t_followers.total_followers}}
+        <a href="{{url_for('show_followers', user_url_slug=us.username)}}">{{t_followers.total_followers}}
         {%if t_followers.total_followers > 1 %} followers {% else %} follower {% endif %}</a>
     {% else %} 0 following
     {% endif %}
 
     {%if t_following %}
-        <a href="{{url_for('show_following', username=us.username)}}">{{t_following.total_following}} 
+        <a href="{{url_for('show_following', user_url_slug=us.username)}}">{{t_following.total_following}} 
         following</a>
     {% else %} 0 followers
     {% endif %}
