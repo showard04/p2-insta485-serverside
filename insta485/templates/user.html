@@ -41,9 +41,13 @@
     <b> 
     {%if t_posts %}
         {{t_posts.total_posts}}
-        {%if t_posts.total_posts == 1%} post
-        {% else %} posts
+        {% if t_posts.total_posts == 1 %}
+            post
+        {% else %}
+            posts
         {% endif %}
+    {% else %}
+        0 posts
     {% endif %}
 
     {%if t_followers %}
