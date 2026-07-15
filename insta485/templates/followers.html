@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>insta485</title>
+    <title>insta485</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
 </head>
 <body>
-
     <a href="/">insta485 </a>
     <a href="/explore/">explore </a>
     <a href="/users/{{ logname }}/">{{ logname }}</a>
 
 <hr>
 
-<h2>following</h2>
+<h2>followers</h2>
 
-{% for user in following %}
+{% for user in followers %}
     <a href="/users/{{ user.username }}/">
         <img src="/uploads/{{ user.user_img_url }}" alt="{{ user.username }} profile picture" width="50">
     </a>
     <a href="/users/{{ user.username }}/">{{ user.username }}</a>
 
     {% if user.username != logname %}
-        {% if user.logname_follows_username %}
+        {% if user.follower in logname_following_list %}
         <span>following</span>
         <form action="{{ url_for('update_following') }}?target={{ request.path }}" method="post" enctype="multipart/form-data">
             <input type="submit" name="unfollow" value="unfollow"/>
@@ -38,6 +38,5 @@
     {% endif %}
     <br>
 {% endfor %}
-
 </body>
 </html>

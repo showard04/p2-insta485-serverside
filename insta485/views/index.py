@@ -10,7 +10,7 @@ def show_index():
     if "username" not in flask.session:
         return flask.redirect(flask.url_for("show_login"))
     
-    logname = "awdeorio"
+    logname = flask.session["username"]
     # Connect to database
     connection = insta485.model.get_db()
     con1 = connection.execute("""
