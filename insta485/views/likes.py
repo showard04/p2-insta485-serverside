@@ -1,0 +1,55 @@
+# Like routes
+
+import sqlite3
+
+import flask
+import insta485
+from insta485.views.accounts import login_required
+
+
+@insta485.app.route("/likes/", methods=["POST"])
+def update_likes():
+    redirect_response = login_required() # regular login check
+    if redirect_response is not None:
+        return redirect_response
+
+    logname = flask.session["username"]
+    operation = flask.request.form["operation"]
+    postid = flask.request.form["postid"]
+
+    connection = sqlite3.connect(insta485.app.config["DATABASE_FILENAME"])
+    connection.row_factory = sqlite3.Row
+
+    # check if a like already exists on this post
+    existing = connection.execute(
+        "SELECT 1 FROM likes WHERE owner = ? AND postid = ?",
+        (logname, postid),
+    ).fetchone()
+    
+    # update likes on a post if the user likes it
+    if operation == "like":
+        if existing is not None: # check if the post is already liked by this user
+            connection.close()
+            flask.abort(409)
+        connection.execute(
+            "INSERT INTO likes (owner, postid) VALUES (?, ?)",
+            (logname, postid),
+        )
+    # update post for when a user unlikes it
+    elif operation == "unlike":
+        if existing is None: # check if post is already liked, if so, there is nothing to unlike!
+            connection.close()
+            flask.abort(409)
+        connection.execute(
+            "DELETE FROM likes WHERE owner = ? AND postid = ?",
+            (logname, postid),
+        )
+    else:
+        connection.close()
+        flask.abort(400)
+
+    connection.commit()
+    connection.close()
+
+    target = flask.request.args.get("target", "/")
+    return flask.redirect(target)
