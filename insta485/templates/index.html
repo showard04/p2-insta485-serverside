@@ -1,9 +1,67 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"">
 <head>
-  <title>insta485</title>
+    <title>insta485</title>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
 </head>
 <body>
-  Hello world!
+    <header>
+        <a href="/">insta485</a>
+        <a href="{{url_for('show_explore')}}">explore</a>
+        <a href="{{url_for('show_user', user_url_slug=logged_user.username)}}">{{logged_user.username}}</a>
+    </header>
+    {% for post in posts %}
+        {% for each_user in users %}
+            {% if each_user.username == post.owner %}
+                <img src="{{url_for('show_upload', filename=each_user.filename)}}" alt="profile picture">
+                <a href="{{url_for('show_user', user_url_slug=each_user.username)}}">{{post.owner}}</a>
+            {%endif%}
+        {%endfor%}
+
+        <a href="{{url_for('show_post', postid=post.postid)}}">
+            <p class="postTime"><b>{{humantime_dict[post.postid]}}</b></p>
+        </a>
+        <img src="{{url_for('show_upload', filename=post.filename)}}" alt="post picture">
+
+        {% for like in likes %}
+            {% if post.postid == like.postid %}
+                <p>{{like.like_count}} 
+                {%if like.like_count > 1 or like.like_count == 0%} likes 
+                {%else%} like 
+                {%endif%}</p>
+            {%endif%}
+        {% endfor %}
+
+        {% for comment in comments%}
+            {% if post.postid == comment.postid%}
+                <p><b><a href="{{url_for('show_user', user_url_slug=comment.owner)}}">{{comment.owner}}</a>
+                </b> {{comment.text}}</p>
+            {% endif %}
+        {% endfor %}
+            
+        {% for like in likes %}
+            {% if post.postid == like.postid %} 
+                {% if logged_user.username == like.owner %}
+                <form action="/likes/?target=/" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="operation" value="unlike"/>
+                <input type="hidden" name="postid" value="{{post.postid}}"/>
+                <input type="submit" name="unlike" value="unlike"/>
+                </form>
+                {% else %}
+                <form action="/likes/?target=/" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="operation" value="like"/>
+                <input type="hidden" name="postid" value="{{post.postid}}"/>
+                <input type="submit" name="like" value="like"/>
+                </form>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+            <form action="/comments/?target=/" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="operation" value="create"/>
+            <input type="hidden" name="postid" value="<{{post.postid}}"/>
+            <input type="text" name="text" required/>
+            <input type="submit" name="comment" value="comment"/>
+            </form>
+    {% endfor %}
 </body>
 </html>

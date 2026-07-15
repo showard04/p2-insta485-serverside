@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>insta485</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+</head>
+<body>
+    <header>
+        <a href="/">insta485</a>
+        <a href="{{url_for('show_explore')}}">explore</a>
+        <a href="{{url_for('show_user', user_url_slug=logged_user.username)}}">{{logged_user.username}}</a>
+    </header>
+
+    <h1>{{us.username}}</h1>
+
+    {% if us.username != logged_user.username %}
+        {% if logname_follows_username == False %}
+            <form action="{{url_for('show_following', username=us.username)}}?target={{url_for('show_user', user_url_slug=logged_user.username)}}" method="post" enctype="multipart/form-data">
+                <input type="submit" name="follow" value="follow"/>
+                <input type="hidden" name="username" value="{{us.username}}"/>
+                <input type="hidden" name="operation" value="follow"/>
+            </form>
+        {% endif %}
+        {% if logname_follows_username == True %}
+        <form action="{{url_for('show_following', username=us.username)}}?target={{url_for('show_user', user_url_slug=logged_user.username)}}" method="post" enctype="multipart/form-data">
+            <input type="submit" name="unfollow" value="unfollow"/>
+            <input type="hidden" name="username" value="{{us.username}}"/>
+            <input type="hidden" name="operation" value="unfollow"/>
+        </form>
+        {% endif %}
+    {% else %}
+        <p><b>Edit profile</b></p>
+        <form action="/accounts/logout/" method="post" enctype="multipart/form-data">
+            <input type="submit" name="logout" value="Logout"/>
+        </form>
+    {% endif %}
+    
+    <b> 
+    {%if t_posts %}
+        {{t_posts.total_posts}}
+        {%if t_posts.total_posts > 1%} posts 
+            {% else %} post 
+        {% endif %} 
+    {% else %} 0 posts
+    {% endif %}
+
+    {%if t_followers %}
+        <a href="{{url_for('show_followers', username=us.username)}}">{{t_followers.total_followers}}
+        {%if t_followers.total_followers > 1 %} followers {% else %} follower {% endif %}</a>
+    {% else %} 0 following
+    {% endif %}
+
+    {%if t_following %}
+        <a href="{{url_for('show_following', username=us.username)}}">{{t_following.total_following}} 
+        following</a>
+    {% else %} 0 followers
+    {% endif %}
+    </b>
+
+    <p>{{us.fullname}}</p>
+
+    {% if us.username == logged_user.username %}
+        <form action="/posts/?target={{url_for('show_user', user_url_slug=us.username)}}" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" accept="image/*" required/>
+            <input type="submit" name="create_post" value="upload new post"/>
+            <input type="hidden" name="operation" value="create"/>
+        </form>
+    {% endif %}
+
+    {% if user_posts %}
+        {% for item in user_posts %}
+        <a href="{{url_for('show_post', postid=item.postid)}}">
+            <img src="{{url_for('show_upload', filename=item.filename)}}" alt="post picture">
+        </a>
+        {% endfor %}
+    {% else %} <p>No posts yet</p>
+    {% endif %}
+</body>
+</html>
