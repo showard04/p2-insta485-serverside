@@ -14,3 +14,5 @@ from insta485.views.following import (
     show_following,
     update_following,
 )
+from insta485.views.explore import show_explore
+from insta485.views.uploads import show_upload
