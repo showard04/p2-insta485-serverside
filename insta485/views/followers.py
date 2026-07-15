@@ -2,20 +2,21 @@
 import flask
 import insta485
 
-
-@insta485.app.route('/users/<user_url_slug>/followers/')
+@insta485.app.route("/users/<user_url_slug>/followers/")
 def show_followers(user_url_slug):
-    """Display / followers route."""
+    """Display followers page."""
+    if "username" not in flask.session:
+        return flask.redirect(flask.url_for("show_login"))
+
     logname = flask.session["username"]
     connection = insta485.model.get_db()
-    target_user = connection.execute(
+
+    user = connection.execute(
         "SELECT username FROM users WHERE username = ?",
         (user_url_slug,),
     ).fetchone()
 
-    # if the user doesn't exist
-    if target_user is None:
-        connection.close()
+    if user is None:
         flask.abort(404)
 
     con = connection.execute("""

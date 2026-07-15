@@ -1,11 +1,16 @@
-"""Insta485 uploads."""
+"""Upload routes."""
+
 import flask
 import insta485
 
 
-@insta485.app.route('/uploads/<filename>')
+@insta485.app.route("/uploads/<filename>")
 def show_upload(filename):
-    """Display / uploads."""
+    """Serve uploaded files only to logged-in users."""
+    if "username" not in flask.session:
+        flask.abort(403)
+
     return flask.send_from_directory(
-        "sql/uploads", filename, as_attachment=True
+        insta485.app.config["UPLOAD_FOLDER"],
+        filename,
     )

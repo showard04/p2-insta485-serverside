@@ -22,3 +22,4 @@ from insta485.views.post import show_post
 from insta485.views.likes import update_likes
 from insta485.views.comments import update_comments
 from insta485.views.posts import update_posts
+from insta485.views.uploads import show_upload
