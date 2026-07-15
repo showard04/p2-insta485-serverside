@@ -8,7 +8,7 @@ def show_explore():
     """Display / explore."""
     connection = insta485.model.get_db()
 
-    logname = "awdeorio"
+    logname = flask.session["username"]
     con = connection.execute("""
         SELECT username
         FROM users

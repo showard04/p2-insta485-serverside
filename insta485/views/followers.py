@@ -6,7 +6,7 @@ import insta485
 @insta485.app.route('/users/<user_url_slug>/followers/')
 def show_followers(user_url_slug):
     """Display / followers route."""
-    logname = "awdeorio"
+    logname = flask.session["username"]
     connection = insta485.model.get_db()
     target_user = connection.execute(
         "SELECT username FROM users WHERE username = ?",

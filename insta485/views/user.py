@@ -8,7 +8,7 @@ def show_user(user_url_slug):
     """Display / users."""
     # Connect to database
     connection = insta485.model.get_db()
-    logname = "awdeorio"
+    logname = flask.session["username"]
 
     con = connection.execute(
         "SELECT username, fullname  "

@@ -18,3 +18,4 @@ from insta485.views.following import (
 from insta485.views.followers import show_followers
 from insta485.views.explore import show_explore
 from insta485.views.uploads import show_upload
+from insta485.views.post import show_post
