@@ -15,14 +15,14 @@
 
     {% if us.username != logged_user.username %}
         {% if logname_follows_username == False %}
-            <form action="{{url_for('show_following', username=us.username)}}?target={{url_for('show_user', user_url_slug=logged_user.username)}}" method="post" enctype="multipart/form-data">
+            <form action="{{url_for('show_following', user_url_slug=us.username)}}?target={{url_for('show_user', user_url_slug=logged_user.username)}}" method="post" enctype="multipart/form-data">
                 <input type="submit" name="follow" value="follow"/>
                 <input type="hidden" name="username" value="{{us.username}}"/>
                 <input type="hidden" name="operation" value="follow"/>
             </form>
         {% endif %}
         {% if logname_follows_username == True %}
-        <form action="{{url_for('show_following', username=us.username)}}?target={{url_for('show_user', user_url_slug=logged_user.username)}}" method="post" enctype="multipart/form-data">
+        <form action="{{url_for('show_following', user_url_slug=us.username)}}?target={{url_for('show_user', user_url_slug=logged_user.username)}}" method="post" enctype="multipart/form-data">
             <input type="submit" name="unfollow" value="unfollow"/>
             <input type="hidden" name="username" value="{{us.username}}"/>
             <input type="hidden" name="operation" value="unfollow"/>
