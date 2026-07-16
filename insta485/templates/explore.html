@@ -21,6 +21,7 @@
         {% endfor %}
         <a href="{{url_for('show_user', user_url_slug=item.followee)}}">{{item.followee}}</a>
         <form action="{{url_for('show_following', user_url_slug=item.followee)}}?target={{url_for('show_explore')}}" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <input type="submit" name="follow" value="follow"/>
             <input type="hidden" name="username" value="{{item.followee}}"/>
             <input type="hidden" name="operation" value="follow"/>

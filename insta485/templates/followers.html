@@ -23,6 +23,7 @@
         {% if user.follower in logname_following_list %}
         <span>following</span>
         <form action="{{ url_for('update_following') }}?target={{ request.path }}" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <input type="submit" name="unfollow" value="unfollow"/>
             <input type="hidden" name="username" value="{{ user.username }}"/>
             <input type="hidden" name="operation" value="unfollow"/>
@@ -30,6 +31,7 @@
         {% else %}
         <span>not following</span>
         <form action="{{ url_for('update_following') }}?target={{ request.path }}" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <input type="submit" name="follow" value="follow"/>
             <input type="hidden" name="username" value="{{ user.username }}"/>
             <input type="hidden" name="operation" value="follow"/>

@@ -43,12 +43,14 @@
             {% if post.postid == like.postid %} 
                 {% if logged_user.username == like.owner %}
                 <form action="/likes/?target=/" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 <input type="hidden" name="operation" value="unlike"/>
                 <input type="hidden" name="postid" value="{{post.postid}}"/>
                 <input type="submit" name="unlike" value="unlike"/>
                 </form>
                 {% else %}
                 <form action="/likes/?target=/" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 <input type="hidden" name="operation" value="like"/>
                 <input type="hidden" name="postid" value="{{post.postid}}"/>
                 <input type="submit" name="like" value="like"/>
@@ -57,6 +59,7 @@
             {% endif %}
         {% endfor %}
             <form action="/comments/?target=/" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <input type="hidden" name="operation" value="create"/>
             <input type="hidden" name="postid" value="<{{post.postid}}"/>
             <input type="text" name="text" required/>

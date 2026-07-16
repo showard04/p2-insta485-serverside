@@ -16,6 +16,7 @@
     {% if us.username != logged_user.username %}
         {% if logname_follows_username == False %}
             <form action="{{url_for('show_following', user_url_slug=us.username)}}?target={{url_for('show_user', user_url_slug=logged_user.username)}}" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 <input type="submit" name="follow" value="follow"/>
                 <input type="hidden" name="username" value="{{us.username}}"/>
                 <input type="hidden" name="operation" value="follow"/>
@@ -23,6 +24,7 @@
         {% endif %}
         {% if logname_follows_username == True %}
         <form action="{{url_for('show_following', user_url_slug=us.username)}}?target={{url_for('show_user', user_url_slug=logged_user.username)}}" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <input type="submit" name="unfollow" value="unfollow"/>
             <input type="hidden" name="username" value="{{us.username}}"/>
             <input type="hidden" name="operation" value="unfollow"/>
@@ -31,6 +33,7 @@
     {% else %}
         <p><b>Edit profile</b></p>
         <form action="/accounts/logout/" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <input type="submit" name="logout" value="Logout"/>
         </form>
     {% endif %}
@@ -60,6 +63,7 @@
 
     {% if us.username == logged_user.username %}
         <form action="/posts/?target={{url_for('show_user', user_url_slug=us.username)}}" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <input type="file" name="file" accept="image/*" required/>
             <input type="submit" name="create_post" value="upload new post"/>
             <input type="hidden" name="operation" value="create"/>

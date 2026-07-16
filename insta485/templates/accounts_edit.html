@@ -13,6 +13,7 @@
     <p>{{ user.username }}</p>
 
     <form action="/accounts/?target=/accounts/edit/" method="post" enctype="multipart/form-data">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       <input type="file" name="file" accept="image/*"/>
       <input type="text" name="fullname" value="{{ user.fullname }}" required/>
       <input type="text" name="email" value="{{ user.email }}" required/>
