@@ -9,6 +9,8 @@ from insta485.views.accounts import (
     show_edit,
     show_login,
     show_password,
+    update_accounts,
+    logout,
 )
 
 from insta485.views.following import (

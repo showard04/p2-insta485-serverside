@@ -1,13 +1,15 @@
 """Insta485 package initializer."""
 
-import flask
-from flask_wtf.csrf import CSRFProtect
-import insta485.views
-import insta485.model
+import importlib
 
-app = flask.Flask(__name__)  # pylint: disable=invalid-name
+import flask
+import flask_wtf.csrf
+
+app = flask.Flask(__name__)
 app.config.from_object("insta485.config")
 app.config.from_envvar("INSTA485_SETTINGS", silent=True)
-csrf = CSRFProtect(app)
 
-csrf = CSRFProtect(app)
+flask_wtf.csrf.CSRFProtect(app)
+
+importlib.import_module("insta485.views")
+importlib.import_module("insta485.model")
