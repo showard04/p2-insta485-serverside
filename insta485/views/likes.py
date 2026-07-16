@@ -1,4 +1,4 @@
-# Like routes
+"""Like routes."""
 
 import sqlite3
 
@@ -9,7 +9,8 @@ from insta485.views.accounts import login_required
 
 @insta485.app.route("/likes/", methods=["POST"])
 def update_likes():
-    redirect_response = login_required() # regular login check
+    """Handle like and unlike operations."""
+    redirect_response = login_required()  # regular login check
     if redirect_response is not None:
         return redirect_response
 
@@ -25,10 +26,9 @@ def update_likes():
         "SELECT 1 FROM likes WHERE owner = ? AND postid = ?",
         (logname, postid),
     ).fetchone()
-    
     # update likes on a post if the user likes it
     if operation == "like":
-        if existing is not None: # check if the post is already liked by this user
+        if existing is not None:  # check if post already liked by this user
             connection.close()
             flask.abort(409)
         connection.execute(
@@ -37,7 +37,7 @@ def update_likes():
         )
     # update post for when a user unlikes it
     elif operation == "unlike":
-        if existing is None: # check if post is already liked, if so, there is nothing to unlike!
+        if existing is None:  # check if post already liked
             connection.close()
             flask.abort(409)
         connection.execute(

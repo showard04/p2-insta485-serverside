@@ -1,14 +1,15 @@
-# Following routes
+"""Following routes."""
 
 import sqlite3
 import flask
 import insta485
 from insta485.views.accounts import login_required
 
+
 @insta485.app.route("/users/<user_url_slug>/following/")
 def show_following(user_url_slug):
-    """get the users that user slug is following"""
-    redirect_response = login_required() # if the user isnt logged in, send them to login page
+    """Display following page."""
+    redirect_response = login_required()  # send to login page if not
     if redirect_response is not None:
         return redirect_response
 
@@ -26,10 +27,9 @@ def show_following(user_url_slug):
         connection.close()
         flask.abort(404)
 
-    logname = flask.session["username"] # retrieve who user is
+    logname = flask.session["username"]  # retrieve who user is
     # sql string (query)
     following = connection.execute(
-        
         """
         SELECT users.username, users.filename AS user_img_url,
                EXISTS(
@@ -41,7 +41,7 @@ def show_following(user_url_slug):
         WHERE following.follower = ?
         """,
         (logname, user_url_slug),
-    ).fetchall() # retrieve all the query matches
+    ).fetchall()  # retrieve all the query matches
 
     connection.close()
 
@@ -54,6 +54,7 @@ def show_following(user_url_slug):
 
 @insta485.app.route("/following/", methods=["POST"])
 def update_following():
+    """Handle follow and unfollow operations."""
     redirect_response = login_required()
     if redirect_response is not None:
         return redirect_response

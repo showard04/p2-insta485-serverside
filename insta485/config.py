@@ -4,7 +4,10 @@ import pathlib
 
 APPLICATION_ROOT = "/"
 
-SECRET_KEY = b'u\xa4\xa5\x0f\xf4j\xc7M\x15\x95\xb7))\xb9\x0f\x8f\x9c\xc5\xa6R:\xa7\xaa\xfa'
+SECRET_KEY = (
+    b'u\xa4\xa5\x0f\xf4j\xc7M\x15\x95\xb7))'
+    b'\xb9\x0f\x8f\x9c\xc5\xa6R:\xa7\xaa\xfa'
+)
 SESSION_COOKIE_NAME = "login"
 
 INSTA485_ROOT = pathlib.Path(__file__).resolve().parent.parent

@@ -1,4 +1,4 @@
-# Comment routes
+"""Comment routes."""
 
 import sqlite3
 
@@ -9,7 +9,8 @@ from insta485.views.accounts import login_required
 
 @insta485.app.route("/comments/", methods=["POST"])
 def update_comments():
-    redirect_response = login_required() # regular login check
+    """Handle comment create and delete operations."""
+    redirect_response = login_required()  # regular login check
     if redirect_response is not None:
         return redirect_response
 
@@ -23,7 +24,7 @@ def update_comments():
         postid = flask.request.form["postid"]
         text = flask.request.form["text"]
 
-        if not text: # dont allow blank comments
+        if not text:  # dont allow blank comments
             connection.close()
             flask.abort(400)
 
@@ -45,7 +46,7 @@ def update_comments():
             connection.close()
             flask.abort(404)
 
-        if comment["owner"] != username: # if the comment isn't owned by the user
+        if comment["owner"] != username:  # if comment not owned by the user
             connection.close()
             flask.abort(403)
 

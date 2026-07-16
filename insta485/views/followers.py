@@ -2,6 +2,7 @@
 import flask
 import insta485
 
+
 @insta485.app.route("/users/<user_url_slug>/followers/")
 def show_followers(user_url_slug):
     """Display followers page."""

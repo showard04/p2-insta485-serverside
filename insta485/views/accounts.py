@@ -109,7 +109,13 @@ def handle_create():
     password = flask.request.form.get("password")
     fileobj = flask.request.files.get("file")
 
-    if not username or not fullname or not email or not password or not fileobj:
+    if (
+        not username
+        or not fullname
+        or not email
+        or not password
+        or not fileobj
+    ):
         flask.abort(400)
 
     connection = sqlite3.connect(insta485.app.config["DATABASE_FILENAME"])
