@@ -13,42 +13,38 @@ def show_user(user_url_slug):
     connection = insta485.model.get_db()
     logname = flask.session["username"]
 
-    con = connection.execute(
+    logged_user = connection.execute(
         "SELECT username, fullname "
         "FROM users "
         "WHERE username = ?",
         (logname,),
-    )
-    logged_user = con.fetchone()
+    ).fetchone()
 
-    con2 = connection.execute(
+    us = connection.execute(
         "SELECT username, fullname "
         "FROM users "
         "WHERE username = ?",
         (user_url_slug,),
-    )
-    us = con2.fetchone()
+    ).fetchone()
 
     if us is None:
         flask.abort(404)
 
-    con3 = connection.execute(
+    t_posts = connection.execute(
         "SELECT COUNT(postid) AS total_posts "
         "FROM posts "
         "WHERE owner = ?",
         (user_url_slug,),
-    )
-    t_posts = con3.fetchone()
+    ).fetchone()
 
-    con4 = connection.execute(
+    t_following = connection.execute(
         """
         SELECT COUNT(followee) AS total_following
         FROM following
         WHERE follower = ?
         """,
         (user_url_slug,),
-    )
-    t_following = con4.fetchone()
+    ).fetchone()
 
     con5 = connection.execute(
         """
