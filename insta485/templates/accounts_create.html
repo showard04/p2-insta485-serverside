@@ -12,10 +12,15 @@
   <main>
     <form action="/accounts/?target=/" method="post" enctype="multipart/form-data">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <p>Photo</p>
       <input type="file" name="file" required/>
+      <p>Name</p>
       <input type="text" name="fullname" required/>
+      <p>Username</p>
       <input type="text" name="username" required/>
+      <p>Email</p>
       <input type="text" name="email" required/>
+      <p>Password</p>
       <input type="password" name="password" required/>
       <input type="submit" name="signup" value="sign up"/>
       <input type="hidden" name="operation" value="create"/>

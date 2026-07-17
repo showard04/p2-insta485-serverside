@@ -11,7 +11,9 @@
   <main>
     <form action="/accounts/?target=/" method="post" enctype="multipart/form-data">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <p>username</p>
       <input type="text" name="username" required/>
+      <p>password</p>
       <input type="password" name="password" required/>
       <input type="submit" value="login"/>
       <input type="hidden" name="operation" value="login"/>

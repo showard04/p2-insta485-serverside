@@ -14,8 +14,11 @@
 
     <form action="/accounts/?target=/accounts/edit/" method="post" enctype="multipart/form-data">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <p>Photo</p>
       <input type="file" name="file" accept="image/*"/>
+      <p>Name</p>
       <input type="text" name="fullname" value="{{ user.fullname }}" required/>
+      <p>Email</p>
       <input type="text" name="email" value="{{ user.email }}" required/>
       <input type="submit" name="update" value="submit"/>
       <input type="hidden" name="operation" value="edit_account"/>

@@ -1,15 +1,14 @@
 """Insta485 package initializer."""
 
-import importlib
-
 import flask
 import flask_wtf.csrf
 
-app = flask.Flask(__name__)
+
+app = flask.Flask(__name__)  # pylint: disable=invalid-name
 app.config.from_object("insta485.config")
 app.config.from_envvar("INSTA485_SETTINGS", silent=True)
 
 flask_wtf.csrf.CSRFProtect(app)
 
-importlib.import_module("insta485.views")
-importlib.import_module("insta485.model")
+import insta485.views  # noqa: E402  pylint: disable=wrong-import-position
+import insta485.model  # noqa: E402  pylint: disable=wrong-import-position
