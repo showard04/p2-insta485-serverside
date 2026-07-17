@@ -46,11 +46,7 @@ def _get_humantime_dict(posts):
     humantime_dict = {}
 
     for post in posts:
-        time_created = str(post['created'])
-        arrow.get(time_created)
-        now = arrow.utcnow()
-        time_created = now.to('US/Eastern')
-        timestamp = time_created.humanize()
+        timestamp = arrow.utcnow().humanize()
         humantime_dict.update({post["postid"]: timestamp})
 
     return humantime_dict
@@ -64,6 +60,22 @@ def _get_likes(connection):
         GROUP BY postid
         """
     ).fetchall()
+
+
+def _get_liked_postids(connection, logname):
+    likes = connection.execute(
+        """
+        SELECT postid
+        FROM likes
+        WHERE owner = ?
+        """,
+        (logname,),
+    ).fetchall()
+
+    return [
+        like["postid"]
+        for like in likes
+    ]
 
 
 def _get_comments(connection):
@@ -95,5 +107,6 @@ def show_index():
         "likes": _get_likes(connection),
         "comments": _get_comments(connection),
         "humantime_dict": _get_humantime_dict(posts),
+        "liked_postids": _get_liked_postids(connection, logname),
     }
     return flask.render_template("index.html", **context)
