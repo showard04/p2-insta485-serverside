@@ -21,12 +21,12 @@ def show_explore():
     users = con2.fetchall()
 
     con3 = connection.execute(
-        "SELECT DISTINCT F.followee "
-        "FROM following F "
-        "WHERE F.followee NOT IN "
-        "(SELECT DISTINCT F1.followee "
+        "SELECT U.username "
+        "FROM users U "
+        "WHERE U.username NOT IN "
+        "(SELECT F1.followee "
         "FROM following F1 "
-        "WHERE F1.follower = ?) AND F.followee != ?", (logname, logname))
+        "WHERE F1.follower = ?) AND U.username != ?", (logname, logname))
     not_following = con3.fetchall()
 
     context = {

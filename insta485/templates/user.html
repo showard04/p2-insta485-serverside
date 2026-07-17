@@ -15,7 +15,7 @@
 
     {% if us.username != logged_user.username %}
         {% if logname_follows_username == False %}
-            <form action="{{url_for('update_following', user_url_slug=us.username)}}?target={{url_for('show_user', user_url_slug=logged_user.username)}}" method="post" enctype="multipart/form-data">
+            <form action="{{ url_for('update_following') }}?target={{url_for('show_user', user_url_slug=us.username)}}" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 <input type="submit" name="follow" value="follow"/>
                 <input type="hidden" name="username" value="{{us.username}}"/>
@@ -23,7 +23,7 @@
             </form>
         {% endif %}
         {% if logname_follows_username == True %}
-        <form action="{{url_for('update_following', user_url_slug=us.username)}}?target={{url_for('show_user', user_url_slug=logged_user.username)}}" method="post" enctype="multipart/form-data">
+        <form action="{{ url_for('update_following') }}?target={{url_for('show_user', user_url_slug=us.username)}}" method="post" enctype="multipart/form-data">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <input type="submit" name="unfollow" value="unfollow"/>
             <input type="hidden" name="username" value="{{us.username}}"/>

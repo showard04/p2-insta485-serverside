@@ -15,15 +15,15 @@
 
     {% for item in not_following %}
         {% for user in users %}
-            {% if user.username == item.followee %}
+            {% if user.username == item.username %}
                 <img src="{{url_for('show_upload', filename=user.filename)}}" alt="profile picture">
             {% endif %}
         {% endfor %}
-        <a href="{{url_for('show_user', user_url_slug=item.followee)}}">{{item.followee}}</a>
-        <form action="{{url_for('update_following', user_url_slug=item.followee)}}?target={{url_for('show_explore')}}" method="post" enctype="multipart/form-data">
+        <a href="{{url_for('show_user', user_url_slug=item.username)}}">{{item.username}}</a>
+        <form action="{{url_for('update_following')}}?target={{url_for('show_explore')}}" method="post" enctype="multipart/form-data">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <input type="submit" name="follow" value="follow"/>
-            <input type="hidden" name="username" value="{{item.followee}}"/>
+            <input type="hidden" name="username" value="{{ item.username }}"/>
             <input type="hidden" name="operation" value="follow"/>
         </form>
     {% endfor %}
