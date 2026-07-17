@@ -18,38 +18,37 @@ def update_likes():
     operation = flask.request.form["operation"]
     postid = flask.request.form["postid"]
 
-    connection = sqlite3.connect(insta485.app.config["DATABASE_FILENAME"])
-    connection.row_factory = sqlite3.Row
+    conn = sqlite3.connect(insta485.app.config["DATABASE_FILENAME"])
+    conn.row_factory = sqlite3.Row
 
     # check if a like already exists on this post
-    existing = connection.execute(
+    existing = conn.execute(
         "SELECT 1 FROM likes WHERE owner = ? AND postid = ?",
         (logname, postid),
     ).fetchone()
     # update likes on a post if the user likes it
     if operation == "like":
         if existing is not None:  # check if post already liked by this user
-            connection.close()
+            conn.close()
             flask.abort(409)
-        connection.execute(
+        conn.execute(
             "INSERT INTO likes (owner, postid) VALUES (?, ?)",
             (logname, postid),
         )
     # update post for when a user unlikes it
     elif operation == "unlike":
         if existing is None:  # check if post already liked
-            connection.close()
+            conn.close()
             flask.abort(409)
-        connection.execute(
+        conn.execute(
             "DELETE FROM likes WHERE owner = ? AND postid = ?",
-            (logname, postid),
-        )
+            (logname, postid),)
     else:
-        connection.close()
+        conn.close()
         flask.abort(400)
 
-    connection.commit()
-    connection.close()
+    conn.commit()
+    conn.close()
 
     target = flask.request.args.get("target", "/")
     return flask.redirect(target)

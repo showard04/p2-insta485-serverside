@@ -55,44 +55,44 @@ def show_following(user_url_slug):
 @insta485.app.route("/following/", methods=["POST"])
 def update_following():
     """Handle follow and unfollow operations."""
-    redirect_response = login_required()
-    if redirect_response is not None:
-        return redirect_response
+    redirect_res = login_required()
+    if redirect_res is not None:
+        return redirect_res
 
-    logname = flask.session["username"]
-    operation = flask.request.form["operation"]
+    log_name = flask.session["username"]
+    oper = flask.request.form["operation"]
     username = flask.request.form["username"]
 
-    connection = sqlite3.connect(insta485.app.config["DATABASE_FILENAME"])
-    connection.row_factory = sqlite3.Row
+    sql_conn = sqlite3.connect(insta485.app.config["DATABASE_FILENAME"])
+    sql_conn.row_factory = sqlite3.Row
 
-    existing = connection.execute(
+    existing = sql_conn.execute(
         "SELECT 1 FROM following WHERE follower = ? AND followee = ?",
-        (logname, username),
+        (log_name, username),
     ).fetchone()
 
-    if operation == "follow":
+    if oper == "follow":
         if existing is not None:
-            connection.close()
+            sql_conn.close()
             flask.abort(409)
-        connection.execute(
+        sql_conn.execute(
             "INSERT INTO following (follower, followee) VALUES (?, ?)",
-            (logname, username),
+            (log_name, username),
         )
-    elif operation == "unfollow":
+    elif oper == "unfollow":
         if existing is None:
-            connection.close()
+            sql_conn.close()
             flask.abort(409)
-        connection.execute(
+        sql_conn.execute(
             "DELETE FROM following WHERE follower = ? AND followee = ?",
-            (logname, username),
+            (log_name, username),
         )
     else:
-        connection.close()
+        sql_conn.close()
         flask.abort(400)
 
-    connection.commit()
-    connection.close()
+    sql_conn.commit()
+    sql_conn.close()
 
     target = flask.request.args.get("target", "/")
     return flask.redirect(target)

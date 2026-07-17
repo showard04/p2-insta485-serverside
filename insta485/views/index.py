@@ -46,7 +46,12 @@ def _get_humantime_dict(posts):
     humantime_dict = {}
 
     for post in posts:
-        humantime_dict.update({post["postid"]: "just now"})
+        time_created = str(post['created'])
+        arrow.get(time_created)
+        now = arrow.utcnow()
+        time_created = now.to('US/Eastern')
+        timestamp = time_created.humanize()
+        humantime_dict.update({post["postid"]: timestamp})
 
     return humantime_dict
 

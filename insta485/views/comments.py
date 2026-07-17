@@ -54,7 +54,6 @@ def update_comments():
             "DELETE FROM comments WHERE commentid = ?",
             (commentid,),
         )
-
     else:
         connection.close()
         flask.abort(400)
