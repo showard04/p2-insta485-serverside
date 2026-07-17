@@ -5,22 +5,22 @@
 </head>
 <body>
   <header>
-    <a href="/">insta485</a>
-    <a href="/explore/">explore</a>
-    <a href="/users/{{ logname }}/">{{ logname }}</a>
+    <a href="{{url_for('show_index')}}">insta485</a>
+    <a href="{{url_for('show_explore')}}">explore</a>
+    <a href="{{url_for('show_user', user_url_slug=logname)}}">{{ logname }}</a>
   </header>
 
   <main>
     <article>
-      <a href="/users/{{ post.owner }}/">
-        <img src="/uploads/{{ post.owner_img_url }}" alt="{{ post.owner }} profile picture">
+      <a href="{{url_for('show_user', user_url_slug=post.owner)}}">
+        <img src="{{url_for('show_upload', filename=post.owner_img_url)}}" alt="{{ post.owner }} profile picture">
       </a>
 
-      <a href="/users/{{ post.owner }}/">{{ post.owner }}</a>
+      <a href="{{url_for('show_user', user_url_slug=post.owner)}}">{{ post.owner }}</a>
 
-      <a href="/posts/{{ post.postid }}/">just now</a>
+      <a href="{{url_for('show_post', postid=post.postid)}}">just now</a>
 
-      <img src="/uploads/{{ post.filename }}" alt="post image">
+      <img src="{{url_for('show_upload', filename=post.filename)}}" alt="post image">
 
       <p>
         {{ likes }}
@@ -32,14 +32,14 @@
       </p>
 
       {% if liked %}
-      <form action="/likes/?target=/posts/{{ post.postid }}/" method="post" enctype="multipart/form-data">
+      <form action="{{url_for('update_likes')}}?target=/posts/{{ post.postid }}/" method="post" enctype="multipart/form-data">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <input type="hidden" name="operation" value="unlike"/>
         <input type="hidden" name="postid" value="{{ post.postid }}"/>
         <input type="submit" name="unlike" value="unlike"/>
       </form>
       {% else %}
-      <form action="/likes/?target=/posts/{{ post.postid }}/" method="post" enctype="multipart/form-data">
+      <form action="{{url_for('update_likes')}}?target=/posts/{{ post.postid }}/" method="post" enctype="multipart/form-data">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <input type="hidden" name="operation" value="like"/>
         <input type="hidden" name="postid" value="{{ post.postid }}"/>
@@ -49,11 +49,11 @@
 
       {% for comment in comments %}
       <div>
-        <a href="/users/{{ comment.owner }}/">{{ comment.owner }}</a>
+        <a href="{{url_for('show_user', user_url_slug=comment.owner)}}">{{ comment.owner }}</a>
         {{ comment.text }}
 
         {% if comment.owner == logname %}
-        <form action="/comments/?target=/posts/{{ post.postid }}/" method="post" enctype="multipart/form-data">
+        <form action="{{url_for('update_comments')}}?target={{url_for('show_post', postid=post.postid)}}" method="post" enctype="multipart/form-data">
           <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
           <input type="hidden" name="operation" value="delete"/>
           <input type="hidden" name="commentid" value="{{ comment.commentid }}"/>
@@ -63,7 +63,7 @@
       </div>
       {% endfor %}
 
-      <form action="/comments/?target=/posts/{{ post.postid }}/" method="post" enctype="multipart/form-data">
+      <form action="{{url_for('update_comments')}}?target={{url_for('show_post', postid=post.postid)}}" method="post" enctype="multipart/form-data">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <input type="hidden" name="operation" value="create"/>
         <input type="hidden" name="postid" value="{{ post.postid }}"/>
@@ -72,7 +72,7 @@
       </form>
 
       {% if post.owner == logname %}
-      <form action="/posts/?target=/users/{{ logname }}/" method="post" enctype="multipart/form-data">
+      <form action="{{url_for('update_posts', postid=post.postid)}}?target={{url_for('show_user', user_url_slug=logname)}}" method="post" enctype="multipart/form-data">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <input type="hidden" name="operation" value="delete"/>
         <input type="hidden" name="postid" value="{{ post.postid }}"/>

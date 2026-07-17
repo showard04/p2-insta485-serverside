@@ -5,14 +5,14 @@
 </head>
 <body>
   <header>
-    <a href="/">insta485</a>
+    <a href="{{url_for('show_index')}}">insta485</a>
   </header>
 
   <main>
-    <img src="/uploads/{{ user.filename }}" alt="{{ user.username }} profile picture">
+    <img src="{{url_for('show_upload', filename=user.filename)}}" alt="{{ user.username }} profile picture">
     <p>{{ user.username }}</p>
 
-    <form action="/accounts/?target=/accounts/edit/" method="post" enctype="multipart/form-data">
+    <form action="{{url_for('update_accounts')}}?target={{url_for('show_edit')}}" method="post" enctype="multipart/form-data">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       <p>Photo</p>
       <input type="file" name="file" accept="image/*"/>
@@ -25,11 +25,11 @@
     </form>
 
     <p>
-      <a href="/accounts/password/">Change password</a>
+      <a href="{{url_for('show_password')}}">Change password</a>
     </p>
 
     <p>
-      <a href="/accounts/delete/">Delete account</a>
+      <a href="{{url_for('show_delete')}}">Delete account</a>
     </p>
   </main>
 </body>

@@ -2,11 +2,10 @@
 <html lang="en">
 <head>
     <title>insta485</title>
-    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
 </head>
 <body>
     <header>
-        <a href="/">Insta485</a>
+        <a href="{{url_for('show_index')}}">Insta485</a>
         <a href="{{url_for('show_explore')}}">explore</a>
         <a href="{{url_for('show_user', user_url_slug=logged_user.username)}}">{{logged_user.username}}</a>
     </header>

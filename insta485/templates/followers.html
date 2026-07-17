@@ -2,22 +2,21 @@
 <html lang="en">
 <head>
     <title>insta485</title>
-    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
 </head>
 <body>
-    <a href="/">insta485 </a>
-    <a href="/explore/">explore </a>
-    <a href="/users/{{ logname }}/">{{ logname }}</a>
+    <a href="{{url_for('show_index')}}">insta485 </a>
+    <a href="{{url_for('show_explore')}}">explore </a>
+    <a href="{{url_for('show_user', user_url_slug=logname)}}">{{ logname }}</a>
 
 <hr>
 
 <h2>followers</h2>
 
 {% for user in followers %}
-    <a href="/users/{{ user.username }}/">
-        <img src="/uploads/{{ user.user_img_url }}" alt="{{ user.username }} profile picture" width="50">
+    <a href="{{url_for('show_user', user_url_slug=user.username)}}">
+        <img src="{{url_for('show_upload', filename=user.user_img_url)}}" alt="{{ user.username }} profile picture" width="50">
     </a>
-    <a href="/users/{{ user.username }}/">{{ user.username }}</a>
+    <a href="{{url_for('show_user', user_url_slug=user.username)}}">{{ user.username }}</a>
 
     {% if user.username != logname %}
         {% if user.follower in logname_following_list %}

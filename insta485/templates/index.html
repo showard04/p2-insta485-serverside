@@ -2,11 +2,10 @@
 <html lang="en">
 <head>
     <title>insta485</title>
-    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
 </head>
 <body>
     <header>
-        <a href="/">insta485</a>
+        <a href="{{url_for('show_index')}}">insta485</a>
         <a href="{{url_for('show_explore')}}">explore</a>
         <a href="{{url_for('show_user', user_url_slug=logged_user.username)}}">{{logged_user.username}}</a>
     </header>
@@ -48,14 +47,14 @@
     {% endfor %}
 
     {% if post.postid in liked_postids %}
-        <form action="/likes/?target=/" method="post" enctype="multipart/form-data">
+        <form action="{{url_for('update_likes')}}?target={{url_for('show_index')}}" method="post" enctype="multipart/form-data">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <input type="hidden" name="operation" value="unlike"/>
         <input type="hidden" name="postid" value="{{post.postid}}"/>
         <input type="submit" name="unlike" value="unlike"/>
         </form>
     {% else %}
-        <form action="/likes/?target=/" method="post" enctype="multipart/form-data">
+        <form action="{{url_for('update_likes')}}?target={{url_for('show_index')}}" method="post" enctype="multipart/form-data">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <input type="hidden" name="operation" value="like"/>
         <input type="hidden" name="postid" value="{{post.postid}}"/>
@@ -63,7 +62,7 @@
         </form>
     {% endif %}
 
-    <form action="/comments/?target=/" method="post" enctype="multipart/form-data">
+    <form action="{{url_for('update_comments')}}?target={{url_for('show_index')}}" method="post" enctype="multipart/form-data">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <input type="hidden" name="operation" value="create"/>
     <input type="hidden" name="postid" value="{{post.postid}}"/>
