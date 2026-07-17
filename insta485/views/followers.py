@@ -26,7 +26,6 @@ def show_followers(user_url_slug):
         JOIN users U ON F.follower = U.username
         WHERE F.followee = ?""", (user_url_slug,))
     followers = con.fetchall()
-    print(followers)
 
     con2 = connection.execute("""
         SELECT F.followee
@@ -36,7 +35,6 @@ def show_followers(user_url_slug):
     logname_following_list = []
     for item in logname_following_data:
         logname_following_list.append(item['followee'])
-    print(logname_following_list)
 
     context = {
         "followers": followers,
